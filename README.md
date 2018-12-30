@@ -36,6 +36,7 @@ Ideas for the gates class:
 ## Project auxiliaries
 
 - `setup.py`
-- `tests - also run on Circle CI when making PR's into master?
+- `tests - `pytest` - also run on Circle CI when making PR's into master?
+- pylint (have pylint.rc file in main repo)
 
 
