@@ -11,7 +11,7 @@
     
     
 - Gates class
-    - overload __call__ (qubit ) 
+    - overload `__call__` (qubit ) 
     - gate name attribute
     - gate type ( 1 or 2 qubit)
     - target
@@ -31,5 +31,11 @@ Ideas for the gates class:
     - overload `__call__` 
     - overload `__add__` to concatenate circuits
     - overload `__index__` to view individual gates
+
+
+## Project auxiliaries
+
+- `setup.py`
+- `tests - also run on Circle CI when making PR's into master?
 
 
