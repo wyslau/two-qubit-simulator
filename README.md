@@ -8,6 +8,7 @@
     - apply unitary
     - measure state
     - set state
+    - overload  `__repr__`
     
     
 - Gates class
@@ -15,6 +16,7 @@
     - gate name attribute
     - gate type ( 1 or 2 qubit)
     - target
+    - overload `__repr__`
 
     
  - CNOT class(Gate)
@@ -31,6 +33,8 @@ Ideas for the gates class:
     - overload `__call__` 
     - overload `__add__` to concatenate circuits
     - overload `__index__` to view individual gates
+    - overload `__repr__` with nicely formatted circuit representation (or 
+
 
 
 ## Project auxiliaries
