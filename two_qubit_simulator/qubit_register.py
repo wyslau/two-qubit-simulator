@@ -21,10 +21,7 @@ class QubitRegister(object):
 
     def __init__(self, initial_state):
         self.state = self._calculate_density_matrix_(np.array(initial_state))
-
-    def measure(self, basis):
-        pass
-
+        self.n_qubits = int(np.log(len(initial_state)) / np.log(2))
 
     def __call__(self, unitary):
         self.apply_unitary(unitary)
