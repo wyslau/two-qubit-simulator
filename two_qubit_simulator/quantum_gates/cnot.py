@@ -1,5 +1,5 @@
-from quantum_gate import QuantumGate
 import numpy as np
+from .quantum_gate import QuantumGate
 
 class CNOT(QuantumGate):
 
