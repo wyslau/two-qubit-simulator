@@ -55,5 +55,7 @@ class QubitRegister(object):
 
         return np.kron(state, conjugate_transpose(state))
 
-    #def __repr__(self):
-    #    pass
+    def __repr__(self):
+        return 'Quantum register with {} qubit{}, density matrix:\n'.format(
+            self.n_qubits, 's' if self.n_qubits > 1 else ''
+        ) + repr(self.state)
