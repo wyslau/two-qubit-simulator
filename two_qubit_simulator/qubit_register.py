@@ -32,7 +32,7 @@ class QubitRegister(object):
         self.apply_unitary(unitary.astype(np.float64))
 
     def apply_unitary(self, unitary):
-        self.state = np.matmul(unitary, self.state, conjugate_transpose(unitary))    
+        self.state = unitary.dot(self.state).dot(conjugate_transpose(unitary))
 
     def set_state(self, state):
         pass
@@ -55,5 +55,5 @@ class QubitRegister(object):
 
         return np.kron(state, conjugate_transpose(state))
 
-    def __repr__(self):
-        print(self)
+    #def __repr__(self):
+    #    pass
