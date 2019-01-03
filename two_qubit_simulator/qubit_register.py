@@ -25,11 +25,11 @@ class QubitRegister(object):
     """
 
     def __init__(self, initial_state):
-        self.state = self._calculate_density_matrix_(np.array(initial_state).astype(np.float64))
+        self.state = self._calculate_density_matrix_(np.array(initial_state).astype(np.complex128))
         self.n_qubits = int(np.log(len(initial_state)) / np.log(2))
 
     def __call__(self, unitary):
-        self.apply_unitary(unitary.astype(np.float64))
+        self.apply_unitary(unitary.astype(np.complex128))
 
     def apply_unitary(self, unitary):
         self.state = unitary.dot(self.state).dot(conjugate_transpose(unitary))
