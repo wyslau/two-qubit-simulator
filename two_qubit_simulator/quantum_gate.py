@@ -57,11 +57,6 @@ class QuantumGate(object):
         pass
 
 
-class CNOT(QuantumGate):
-
-    def __init__(self):
-        super(CNOT, self).__init__(symbol='CNOT')
-
 class Hadamard(QuantumGate):
     pass
 
@@ -77,18 +72,4 @@ class PauliZ(QuantumGate):
 class PhaseGate(QuantumGate):
     pass
 
-class SWAP(QuantumGate):
-    pass
-
-class SWAP(QuantumGate):
-    pass
-
-class ControlledZ(QuantumGate):
-    pass
-
-class ControlledPhase(QuantumGate):
-    pass
-
-class Toffoli(QuantumGate):
-    pass
 
