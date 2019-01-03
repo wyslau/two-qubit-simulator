@@ -20,19 +20,23 @@ class QubitRegister(object):
     """
 
     def __init__(self, initial_state):
-        pass
+        self.state = self._calculate_density_matrix_(np.array(initial_state))
 
     def measure(self, basis):
         pass
 
+
+    def __call__(self, unitary):
+        self.apply_unitary(unitary)
+
     def apply_unitary(self, unitary):
-        pass    
+        self.state = np.matmul(unitary, self.state, unitary.H)    
 
     def set_state(self, state):
         pass
 
-    def _calculate_density_matrix_(self):
-        pass
+    def _calculate_density_matrix_(self, state):
+        return np.kron(state, state.H)
 
     def __repr__(self):
         print(self)

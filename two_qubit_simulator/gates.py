@@ -26,12 +26,12 @@ class QuantumGate(object):
 
     """
 
-	def __init__(self, symbol=None, unitary_operator):
-		self.symbol = symbol
-		self.unitary_operator = unitary_operator
+    def __init__(self, unitary_operator, symbol=None):
+        self.symbol = symbol
+        self.unitary_operator = unitary_operator
 
-	# Apply the gate
-	def __call__(self, register):
+    # Apply the gate
+    def __call__(self, register):
         """
             Apply the gate to a given qubit register
 
@@ -47,20 +47,20 @@ class QuantumGate(object):
             ------------
 
         """
-		pass
+        register.apply_unitary(self.unitary_operator)
 
-	def __repr__(self):
+    def __repr__(self):
         """
             Print a representation of the gate using the class name and the symbol and
             unitary_operator attribute
         """
-		pass
+        pass
 
 
 class CNOT(QuantumGate):
 
-	def __init__(self):
-		super(CNOT, self).__init__(symbol='CNOT')
+    def __init__(self):
+        super(CNOT, self).__init__(symbol='CNOT')
 
 class Hadamard(QuantumGate):
     pass
