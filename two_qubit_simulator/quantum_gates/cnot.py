@@ -23,4 +23,4 @@ class CNOT(QuantumGate):
 			print(" Invalid targets: {}\n Should be of the form 0,1 or 1,0".format(targets))
 
 		# DIY for larger numbers of qubits
-		super().__init__(operation, [u"\u20dd",u"\u2022"])
+		super(CNOT, self).__init__(operation, [u"\u20dd",u"\u2022"])
