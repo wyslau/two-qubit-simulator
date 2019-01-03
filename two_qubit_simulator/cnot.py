@@ -1,17 +1,18 @@
-import quantum_gate
+from quantum_gate import QuantumGate
+import numpy as np
 
 class CNOT(QuantumGate):
 
 	def __init__(self, *targets):
 		operation = None
 		# Two qubit cheat version
-		if targets == [0,1]:
+		if targets == (0,1):
 			operation = np.array([
 				[1, 0, 0, 0],
 				[0, 1, 0, 0],
 				[0, 0, 0, 1],
 				[0, 0, 1, 0]])
-		elif targets == [1,0]:
+		elif targets == (1,0):
 			operation = np.array([
 				[1, 0, 0, 0],
 				[0, 0, 0, 1],

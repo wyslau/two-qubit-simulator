@@ -28,7 +28,7 @@ class QuantumGate(object):
 
     def __init__(self, unitary_operator, symbol=None):
         self.symbol = symbol
-        self.unitary_operator = unitary_operator
+        self.unitary_operator = unitary_operator.astype(np.float64)
 
     # Apply the gate
     def __call__(self, register):
