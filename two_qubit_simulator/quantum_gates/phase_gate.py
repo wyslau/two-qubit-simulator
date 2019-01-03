@@ -10,7 +10,7 @@ class PhaseGate(QuantumGate):
 
         phase_gate = np.array(
             [[1, 0], [0, np.exp(-1j * np.pi/4)]]
-        ) / np.sqrt(2)
+        )
 
         if len(targets) == 1:
             operation = phase_gate
