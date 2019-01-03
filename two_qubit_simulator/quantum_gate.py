@@ -54,22 +54,5 @@ class QuantumGate(object):
             Print a representation of the gate using the class name and the symbol and
             unitary_operator attribute
         """
-        pass
-
-
-class Hadamard(QuantumGate):
-    pass
-
-class PauliX(QuantumGate):
-    pass
-
-class PauliY(QuantumGate):
-    pass
-
-class PauliZ(QuantumGate):
-    pass
-
-class PhaseGate(QuantumGate):
-    pass
-
-
+        return 'QuantumGate {} ({}):,\n'.format(
+            self.__class__.__name__, self.symbol) + repr(self.unitary_operator)
