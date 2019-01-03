@@ -1,3 +1,4 @@
+import random
 """
 Contains the QubitRegister class
 """
@@ -54,6 +55,16 @@ class QubitRegister(object):
                     + 'Got {} instead.'.format(state))
 
         return np.kron(state, conjugate_transpose(state))
+
+    def measure(self):
+        # Always measures in Z
+        m, s = np.linalg.eig(self.state)
+        outcomes = np.sum(val * vec**2 for vec, val in zip(m,s))
+        result = random.choice([[i].transpose() for i in np.eye(n_qubits**2)] , 
+            self.n_qubits**2,
+            p=outcomes)
+
+
 
     #def __repr__(self):
     #    pass
