@@ -37,7 +37,7 @@ class RandomisedBenchmarking(object):
             random_circuit = circuit.Circuit()
             random_elements = random.choices(gate_set, k=n_gates)
             
-            circuit.circuit_elements = roundrobin(random_elements, noise * n_gates)
+            circuit.circuit_elements = splice(random_elements, noise * n_gates)
             circuit.circuit_elements += random_elements.reverse()   # Undo the previous gate operations
 
             vec = copy.deepcopy(recovered_result)
