@@ -5,7 +5,7 @@ from .quantum_gate import QuantumGate
 
 class Hadamard(QuantumGate):
 
-    def __init__(self, *targets):
+    def __init__(self, *targets, n_qubits=1):
 
         # Default to the first qubit
         if targets is None:
