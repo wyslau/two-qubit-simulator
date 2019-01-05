@@ -1,8 +1,8 @@
-import random
 """
 Contains the QubitRegister class
 """
 from __future__ import division, print_function
+import random
 import numpy as np
 
 
@@ -58,10 +58,21 @@ class QubitRegister(object):
 
         return np.kron(state, conjugate_transpose(state))
 
-    def measure(self):
+    def measure(self, number_of_samples=1):
         # Always measures in Z
-        m, s = np.linalg.eig(self.state)
-        outcomes = np.sum(val * vec**2 for vec, val in zip(m,s))
-        result = random.choice([[i].transpose() for i in np.eye(n_qubits**2)] , 
-            self.n_qubits**2,
-            p=outcomes)
+        #eig_vals, eig_vecs = np.linalg.eig(self.state)
+        #outcome_probabilities = [np.sum(val**2 * vec) for val, vec in zip(eig_vals, eig_vecs)]
+
+        # prepare basis projectors
+        projectors = [
+            self._calculate_density_matrix_(state_vector)
+            for state_vector in np.eye(self.n_qubits * 2)
+        ]
+        outcome_probabilities = [
+            np.abs(np.trace(projector.dot(self.state))) for projector in projectors
+        ]
+
+        results = np.random.choice([i for i in range(self.n_qubits * 2)],
+            number_of_samples,
+            p=outcome_probabilities)
+        return [np.eye(self.n_qubits*2)[result, :] for result in results]
