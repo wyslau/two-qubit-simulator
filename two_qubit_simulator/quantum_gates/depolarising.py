@@ -1,4 +1,5 @@
 from __future__ import print_function
+#import copy
 
 import numpy as np
 from .quantum_gate import QuantumGate
@@ -6,7 +7,7 @@ from .quantum_gate import QuantumGate
 
 class Depolarising(QuantumGate):
 
-    def __init__(self, p_error, *targets, n_qubits=1):
+    def __init__(self, p_error, *targets, n_qubits=1): # pylint: disable=super-init-not-called
 
          # Default to the first qubit
         if targets.__len__() == 0:
@@ -39,21 +40,26 @@ class Depolarising(QuantumGate):
             for i in range(n_qubits):
                 if i in targets:
 
-                    self.operations[operation_index] = np.kron(self.operations[operation_index], gate)
+                    self.operations[operation_index] = np.kron(
+                        self.operations[operation_index], gate
+                    )
                     symbol.append(depolarising_gate_symbol)
                 else:
-                    self.operations[operation_index] = np.kron(self.operations[operation_index], np.eye(2))
+                    self.operations[operation_index] = np.kron(
+                        self.operations[operation_index], np.eye(2)
+                        )
                     symbol.append('')
 
 
         self.symbol = symbol
 
-        def apply_gate(self, register):
-            
-            states = [copy.deepcopy(register) for i in len(self.operations)]
-
-            for state_index in enumerate(states): 
-                states[state_index].apply_unitary(self.operations[state_index])
-
-            register.state = np.sum(register.state for register in registers)
+    # This method needs to be fixed- registers is not defined (did you mean states)?
+    #def apply_gate(self, registers):
+    #    
+    #    states = [copy.deepcopy(register) for i in len(self.operations)]
+    #
+    #    for state_index in enumerate(states): 
+    #        states[state_index].apply_unitary(self.operations[state_index])
+    #
+    #    register.state = np.sum(register.state for register in registers)
 
