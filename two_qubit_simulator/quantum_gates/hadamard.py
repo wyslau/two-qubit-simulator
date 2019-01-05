@@ -11,8 +11,6 @@ class Hadamard(QuantumGate):
         if targets.__len__() == 0:
             targets = (0,)
 
-        print(targets, type(targets))
-
          # In case somebody forgot to set n_qubits
         if n_qubits < len(targets):
             pass
