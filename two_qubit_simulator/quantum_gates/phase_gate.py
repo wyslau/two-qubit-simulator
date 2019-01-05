@@ -9,8 +9,8 @@ class PhaseGate(QuantumGate):
     def __init__(self, *targets, n_qubits=1):
 
         # Default to the first qubit
-        if targets is None:
-            targets = (0)
+        if targets.__len__() == 0:
+            targets = (0,)
 
         # In case somebody forgot to set n_qubits
         if n_qubits < len(targets):
@@ -28,10 +28,10 @@ class PhaseGate(QuantumGate):
         try:
             for i in range(n_qubits):
                 if i in targets:
-                    operation = kron(operation, phase_gate)
+                    operation = np.kron(operation, phase_gate)
                     symbol.append(phase_gate_symbol)
                 else:
-                    operation = kron(operation, np.eye(2))
+                    operation = np.kron(operation, np.eye(2))
                     symbol.append('')
         except:
             raise TypeError(
