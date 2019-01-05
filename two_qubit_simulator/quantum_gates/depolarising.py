@@ -34,28 +34,26 @@ class Depolarising(QuantumGate):
         
         self.operations = [1 - p_error , p_error / 3, p_error / 3, p_error / 3]
         symbol = []
-        for gate, operation_index in zip(gates, enumerate(operations)):
-            try:
-                for i in range(n_qubits):
-                    if i in targets:
-                        operations[operation_index] = np.kron(operations[operation_index], hadamard_gate)
-                        symbol.append(hadamard_gate_symbol)
-                    else:
-                        operations[operation_index] = np.kron(operations[operation_index], np.eye(2))
-                        symbol.append('')
-            except:
-                raise TypeError(
-                    "Invalid targets: {}\n Should be of the form (1,), (0,1) or (1,0)".format(targets)
-                )
+        for gate, operation_index in zip(gates, range(len(self.operations))):
 
-        super(PhaseGate, self).__init__(None, symbol)
+            for i in range(n_qubits):
+                if i in targets:
 
-        def __call__(self, register):
+                    self.operations[operation_index] = np.kron(self.operations[operation_index], gate)
+                    symbol.append(depolarising_gate_symbol)
+                else:
+                    self.operations[operation_index] = np.kron(self.operations[operation_index], np.eye(2))
+                    symbol.append('')
+
+
+        self.symbol = symbol
+
+        def apply_gate(self, register):
             
             states = [copy.deepcopy(register) for i in len(self.operations)]
 
             for state_index in enumerate(states): 
-                states[state_index].apply_unitary(self.operations)
+                states[state_index].apply_unitary(self.operations[state_index])
 
             register.state = np.sum(register.state for register in registers)
 
