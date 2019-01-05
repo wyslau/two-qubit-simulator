@@ -24,7 +24,6 @@ class Hadamard(QuantumGate):
         
         operation = 1
         symbol = []
-        #try:
         for i in range(n_qubits):
             if i in targets:
                 operation = np.kron(operation, hadamard_gate)
@@ -32,9 +31,5 @@ class Hadamard(QuantumGate):
             else:
                 operation = np.kron(operation, np.eye(2))
                 symbol.append('')
-        # except:
-        #     raise TypeError(
-        #         "Invalid targets: {}\n Should be of the form (1,), (0,1) or (1,0)".format(targets)
-        #     )
 
         super(Hadamard, self).__init__(operation, ["H",""])

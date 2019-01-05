@@ -47,7 +47,10 @@ class QuantumGate(object): # pylint: disable=useless-object-inheritance
             ------------
 
         """
+        self.apply_gate(register)
 
+
+    def apply_gate(self, register):
         register.apply_unitary(self.unitary_operator)
 
     def __repr__(self):
