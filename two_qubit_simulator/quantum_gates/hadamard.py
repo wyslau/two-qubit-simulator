@@ -5,11 +5,13 @@ from .quantum_gate import QuantumGate
 
 class Hadamard(QuantumGate):
 
-    def __init__(self, *targets):
+    def __init__(self, *targets, n_qubits=1):
 
         # Default to the first qubit
-        if targets is None:
-            targets = (0)
+        if targets.__len__() == 0:
+            targets = (0,)
+
+        print(targets, type(targets))
 
          # In case somebody forgot to set n_qubits
         if n_qubits < len(targets):
@@ -24,17 +26,17 @@ class Hadamard(QuantumGate):
         
         operation = 1
         symbol = []
-        try:
-            for i in range(n_qubits):
-                if i in targets:
-                    operation = kron(operation, hadamard_gate)
-                    symbol.append(hadamard_gate_symbol)
-                else:
-                    operation = kron(operation, np.eye(2))
-                    symbol.append('')
-        except:
-            raise TypeError(
-                "Invalid targets: {}\n Should be of the form (1,), (0,1) or (1,0)".format(targets)
-            )
+        #try:
+        for i in range(n_qubits):
+            if i in targets:
+                operation = np.kron(operation, hadamard_gate)
+                symbol.append(hadamard_gate_symbol)
+            else:
+                operation = np.kron(operation, np.eye(2))
+                symbol.append('')
+        # except:
+        #     raise TypeError(
+        #         "Invalid targets: {}\n Should be of the form (1,), (0,1) or (1,0)".format(targets)
+        #     )
 
         super(Hadamard, self).__init__(operation, ["H",""])
