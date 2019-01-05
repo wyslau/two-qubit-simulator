@@ -1,7 +1,6 @@
 import random
-import circuits
 import copy
-from qubit_register import QubitRegister
+from two_qubit_simulator import QubitRegister, QuantumCircuit
 from itertools import cycle, islice
 
 
@@ -9,7 +8,7 @@ from itertools import cycle, islice
 def splice(*iterables):
     num_active = len(iterables)
     nexts = cycle(iter(it).__next__ for it in iterables)
-    while num_active:
+    while num_active > 0:
         try:
             for next in nexts:
                 yield next()
@@ -34,7 +33,7 @@ class RandomisedBenchmarking(object):
 
         for _ in n_rounds:
 
-            random_circuit = circuit.Circuit()
+            random_circuit = QuantumCircuit()
             random_elements = random.choices(gate_set, k=n_gates)
             
             circuit.circuit_elements = splice(random_elements, noise * n_gates)

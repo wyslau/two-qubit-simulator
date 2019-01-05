@@ -1,4 +1,6 @@
-
+"""
+Contains the QuantumCircuit class
+"""
 
 class QuantumCircuit(object):
 
