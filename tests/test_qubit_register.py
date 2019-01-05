@@ -37,7 +37,9 @@ def test_qubit_measurement():
     average_outcome = np.sum([
         np.argmax(r) for r in qr_2.measure(number_of_samples=num_samples)
     ]) / num_samples
-    assert np.round(average_outcome, 2) == 0.5
+
+    delta = 0.05
+    assert abs(average_outcome - 0.5) < delta
 
     # Two qubit tests
     qr_3 = QubitRegister([0, 0, 0, 1])

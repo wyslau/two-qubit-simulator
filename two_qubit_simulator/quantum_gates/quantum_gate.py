@@ -9,7 +9,7 @@ TODO:
 from __future__ import division, print_function
 import numpy as np
 
-class QuantumGate(object):
+class QuantumGate(object): # pylint: disable=useless-object-inheritance
     """
         Base class for a quantum gate
 

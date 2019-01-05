@@ -2,7 +2,7 @@
 Contains the QuantumCircuit class
 """
 
-class QuantumCircuit(object):
+class QuantumCircuit(object): # pylint: disable=useless-object-inheritance
 
     def __init__(self):
         self.circuit_elements = []
@@ -17,5 +17,5 @@ class QuantumCircuit(object):
         for gate in self.circuit_elements:
             gate(register)
 
-    def __call__(register):
-        run_circuit(register)
+    def __call__(self, register):
+        self.run_circuit(register)

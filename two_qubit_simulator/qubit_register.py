@@ -2,7 +2,6 @@
 Contains the QubitRegister class
 """
 from __future__ import division, print_function
-import random
 import numpy as np
 
 
@@ -11,7 +10,7 @@ def conjugate_transpose(matrix):
     return matrix.transpose()
 
 
-class QubitRegister(object):
+class QubitRegister(object): # pylint: disable=useless-object-inheritance
     """
         Defines a qubit register with one or two qubits.
 
@@ -40,7 +39,7 @@ class QubitRegister(object):
         unitary = unitary.astype(np.complex128)
         self.state = unitary.dot(self.state).dot(conjugate_transpose(unitary))
 
-    def _calculate_density_matrix_(self, state):
+    def _calculate_density_matrix_(self, state): # pylint: disable=no-self-use
         # Check and adjust input dimension: need to have column vector
         dim = state.shape
         if len(dim) == 1:
