@@ -1,18 +1,16 @@
 language: python
 python:
-  - "2.7"
+  #- "2.7" disable 2.7 for now
   - "3.6"
-  - "3.7"
+# Current workaround to enable 3.7 without globally enabling
+# sudo and dist: xenial for other build jobs
+matrix:
+  include:
+    - python: 3.7
+      dist: xenial
+      sudo: true
+
 install:
   - python setup.py install
 script:
   - pytest
-
-after_failure:
-        - for v in ~/shared/logs/*.log ; do
-          echo $v logtail ======================== ; tail -100 $v ;
-          done
-        - for v in broker middlemanager overlord router coordinator historical ; do
-          echo $v dmesg ======================== ;
-          docker exec -it druid-$v sh -c 'dmesg | tail -3' ;
-          done

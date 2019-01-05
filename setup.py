@@ -15,7 +15,7 @@ def main():
         packages=find_packages(),
         setup_requires=['pytest-runner'],
         tests_require=['pytest'],
-        install_requires=['numpy', 'scipy', 'pytest'],
+        install_requires=['numpy', 'pytest'],
         author='Python@EQUS',
         author_email='python@equs.org',
         description='A simple module to simulate one and two qubit circuits',
