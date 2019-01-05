@@ -47,6 +47,7 @@ class QuantumGate(object):
             ------------
 
         """
+
         register.apply_unitary(self.unitary_operator)
 
     def __repr__(self):

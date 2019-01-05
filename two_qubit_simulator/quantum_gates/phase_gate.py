@@ -6,25 +6,36 @@ from .quantum_gate import QuantumGate
 
 class PhaseGate(QuantumGate):
 
-    def __init__(self, *targets):
+    def __init__(self, *targets, n_qubits=1):
+
+        # Default to the first qubit
+        if targets is None:
+            targets = (0)
+
+        # In case somebody forgot to set n_qubits
+        if n_qubits < len(targets):
+            pass
+            # raise an error 
 
         phase_gate = np.array(
             [[1, 0], [0, np.exp(-1j * np.pi/4)]]
         )
 
-        if len(targets) == 1:
-            operation = phase_gate
-            symbol = u"Ru\u03A6"
-        # Two qubit cheat version
-        elif targets == (0, 1):
-            operation = np.kron(np.eye(2), phase_gate)
-            symbol = ["", u"Ru\u03A6"]
-        elif targets == (1,0):
-            operation = np.kron(phase_gate, np.eye(2))
-            symbol = [u"Ru\u03A6", ""]
-        else :
+        phase_gate_symbol = u"Ru\u03A6"
+        
+        operation = 1
+        symbol = []
+        try:
+            for i in range(n_qubits):
+                if i in targets:
+                    operation = kron(operation, phase_gate)
+                    symbol.append(phase_gate_symbol)
+                else:
+                    operation = kron(operation, np.eye(2))
+                    symbol.append('')
+        except:
             raise TypeError(
                 "Invalid targets: {}\n Should be of the form (1,), (0,1) or (1,0)".format(targets)
-        )
+            )
 
         super(PhaseGate, self).__init__(operation, symbol)

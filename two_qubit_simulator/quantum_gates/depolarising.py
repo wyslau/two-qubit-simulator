@@ -3,11 +3,12 @@ from __future__ import print_function
 import numpy as np
 from .quantum_gate import QuantumGate
 
-class Hadamard(QuantumGate):
 
-    def __init__(self, *targets):
+class PhaseGate(QuantumGate):
 
-        # Default to the first qubit
+    def __init__(self, p_error, *targets):
+
+         # Default to the first qubit
         if targets is None:
             targets = (0)
 
@@ -16,14 +17,24 @@ class Hadamard(QuantumGate):
             pass
             # raise an error 
 
-        hadamard_gate = np.array(
-            [[1, 1], [1, -1]]
-        ) / np.sqrt(2)
+        gates = [
+                eye(2),
+                np.array(
+                    [[0, 1], [1, 0]]
+                ),
+                np.array(
+                    [[0, -1j], [1j, 0]]
+                ),
+                np.array(
+                    [[1, 0], [0, -1]]
+                )
+            ]
 
-        hadamard_gate_symbol = "H"
+        depolarising_gate_symbol = "E"
         
-        operation = 1
+        self.operations = [1 - p_error , p_error / 3, p_error / 3, p_error / 3]
         symbol = []
+        for gate, operation in zip(gates, operations):
         try:
             for i in range(n_qubits):
                 if i in targets:
@@ -37,4 +48,6 @@ class Hadamard(QuantumGate):
                 "Invalid targets: {}\n Should be of the form (1,), (0,1) or (1,0)".format(targets)
             )
 
-        super(Hadamard, self).__init__(operation, ["H",""])
+        super(PhaseGate, self).__init__(operation, symbol)
+
+        def __call__()
