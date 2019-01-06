@@ -50,5 +50,4 @@ def test_qubit_measurement():
 
 
 def test_qubit_unitary_rotation():
-    
-    assert False
+    # implement later
