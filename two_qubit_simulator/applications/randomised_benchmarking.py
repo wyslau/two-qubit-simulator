@@ -1,7 +1,5 @@
 from itertools import cycle, islice
-import random
 import copy
-from itertools import chain
 
 import numpy as np
 from scipy.linalg import expm
@@ -51,8 +49,9 @@ class RandomisedBenchmarking(object): # pylint: disable=useless-object-inheritan
 
             # Undo the previous gate operations
             # Is this faster than actually calculating the recovery gate?
+            # Also: implementation unelegant
             for reverse_gate in random_gates[::-1]:
-                random_circuit + reverse_gate
+                random_circuit + reverse_gate # pylint: disable=pointless-statement
 
             vec = copy.deepcopy(recovered_result)
             state = QubitRegister(vec)
