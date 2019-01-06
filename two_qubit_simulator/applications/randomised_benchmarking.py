@@ -4,7 +4,7 @@ import copy
 
 import numpy as np
 from scipy.linalg import expm
-from two_qubit_simulator import QubitRegister, QuantumCircuit#, CNOT, Hadamard, PhaseGate
+from two_qubit_simulator import QubitRegister, QuantumCircuit, QuantumGate
 
 
 
@@ -79,7 +79,9 @@ def create_single_qubit_gateset():
         x_rotation(- np.pi / 2).dot(z_rotation(- np.pi / 2))
     ]
 
-    clifford_gateset = [p.dot(c) for p in pauli_basis for c in co_set]
+    clifford_gateset = [
+        QuantumGate(unitary_operator=p.dot(c)) for p in pauli_basis for c in co_set
+    ]
     return clifford_gateset
 
 
