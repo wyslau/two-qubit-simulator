@@ -45,10 +45,11 @@ class RandomisedBenchmarking(object): # pylint: disable=useless-object-inheritan
             )
             random_gates = [self.gate_set[i] for i in random_elements]
 
-            
+            # Why make this a generator in the first place? Circuit elements are defined as
+            # lists in the QuantumCircuit class
             random_circuit.circuit_elements = list(splice(random_gates, [self.noise] * n_gates))
-            # Undo the previous gate operations
 
+            # Undo the previous gate operations
             # Is this faster than actually calculating the recovery gate?
             for reverse_gate in random_gates[::-1]:
                 random_circuit + reverse_gate
