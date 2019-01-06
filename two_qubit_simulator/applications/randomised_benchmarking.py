@@ -1,6 +1,7 @@
 from itertools import cycle, islice
 import random
 import copy
+from itertools import chain
 
 import numpy as np
 from scipy.linalg import expm
@@ -33,19 +34,24 @@ class RandomisedBenchmarking(object): # pylint: disable=useless-object-inheritan
     def __call__(self, n_gates, n_qubits=1, n_rounds=100):
         
         results = [0, 0]
-        recovered_result = np.zeros([0] * (2**n_qubits))
+        recovered_result = np.zeros(2**n_qubits)
         recovered_result[0] = 1
 
-        for _ in n_rounds:
+        for _ in range(n_rounds):
 
             random_circuit = QuantumCircuit()
-            random_elements = random.choices(self.gate_set, k=n_gates)
+            random_elements = np.random.choice(
+                [i for i in range(len(self.gate_set))], size=n_gates, replace=True
+            )
+            random_gates = [self.gate_set[i] for i in random_elements]
+
             
-            random_circuit.circuit_elements = splice(random_elements, self.noise * n_gates)
+            random_circuit.circuit_elements = list(splice(random_gates, [self.noise] * n_gates))
             # Undo the previous gate operations
 
             # Is this faster than actually calculating the recovery gate?
-            random_circuit.circuit_elements += random_elements.reverse()
+            for reverse_gate in random_gates[::-1]:
+                random_circuit + reverse_gate
 
             vec = copy.deepcopy(recovered_result)
             state = QubitRegister(vec)
@@ -53,7 +59,7 @@ class RandomisedBenchmarking(object): # pylint: disable=useless-object-inheritan
             random_circuit.run_circuit(state)
             result = state.measure()
 
-            if result == recovered_result:
+            if np.all(result == recovered_result):
                 results[0] += 1
             else:
                 results[1] += 1
