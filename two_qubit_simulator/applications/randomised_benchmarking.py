@@ -3,12 +3,14 @@ import random
 import copy
 
 import numpy as np
+from scipy.linalg import expm
 from two_qubit_simulator import QubitRegister, QuantumCircuit#, CNOT, Hadamard, PhaseGate
 
 
 
 # Itertools round robin recipe
 def splice(*iterables):
+    # alternative implementation (for two lists a and b): (j for i in zip(a, b) for j in i)  
     num_active = len(iterables)
     next_elements = cycle(iter(it).__next__ for it in iterables)
     while num_active > 0:
@@ -41,6 +43,8 @@ class RandomisedBenchmarking(object): # pylint: disable=useless-object-inheritan
             
             random_circuit.circuit_elements = splice(random_elements, self.noise * n_gates)
             # Undo the previous gate operations
+
+            # Is this faster than actually calculating the recovery gate?
             random_circuit.circuit_elements += random_elements.reverse()
 
             vec = copy.deepcopy(recovered_result)
@@ -54,14 +58,29 @@ class RandomisedBenchmarking(object): # pylint: disable=useless-object-inheritan
             else:
                 results[1] += 1
         return results
-            
 
 def create_single_qubit_gateset():
     """
-        Generates the Clifford gateset from the basic gates CNOT, Hadamard, Phase and
-        Identity. For single-qubit gatesets we omit the CNOT gate.
+        Generates the Clifford gateset from Pauli basis superimposed with a co-set, as
+        defined in https://arxiv.org/pdf/1811.01920.pdf.
     """
-    #clifford_generators = [Hadamard(), PhaseGate(), np.eye(2)]
+    # Some useful functions for building gatesets
+    x_rotation = lambda angle: expm( - 1j * angle / 2 * np.array([[0, 1],[1, 0]]))
+    y_rotation = lambda angle: expm( - 1j * angle / 2 * np.array([[0, -1j],[1j, 0]]))
+    z_rotation = lambda angle: expm( - 1j * angle / 2 * np.array([[1, 0],[0, -1]]))
+
+    pauli_basis = [
+        np.eye(2), x_rotation(np.pi), y_rotation(np.pi), z_rotation(np.pi)
+    ]
+    co_set = [
+        np.eye(2),
+        x_rotation(np.pi / 2), y_rotation(np.pi / 2), z_rotation(np.pi / 2),
+        z_rotation(np.pi / 2).dot(x_rotation(np.pi / 2)),
+        x_rotation(- np.pi / 2).dot(z_rotation(- np.pi / 2))
+    ]
+
+    clifford_gateset = [p.dot(c) for p in pauli_basis for c in co_set]
+    return clifford_gateset
 
 
 
