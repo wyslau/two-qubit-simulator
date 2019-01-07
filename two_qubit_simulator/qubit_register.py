@@ -7,7 +7,7 @@ import numpy as np
 
 def conjugate_transpose(matrix):
     """ Calculates the conjugate transpose of a given matrix """
-    return matrix.transpose()
+    return np.conjugate(matrix.transpose())
 
 
 class QubitRegister(object): # pylint: disable=useless-object-inheritance
@@ -37,7 +37,7 @@ class QubitRegister(object): # pylint: disable=useless-object-inheritance
 
     def apply_unitary(self, unitary):
         unitary = unitary.astype(np.complex128)
-        self.state = unitary.dot(self.state).dot(conjugate_transpose(unitary))
+        self.state = unitary.dot(self.state.dot(conjugate_transpose(unitary)))
 
     def _calculate_density_matrix_(self, state): # pylint: disable=no-self-use
         # Check and adjust input dimension: need to have column vector
