@@ -1,5 +1,4 @@
 from itertools import cycle, islice
-import copy
 
 import numpy as np
 from scipy.linalg import expm
@@ -32,34 +31,72 @@ class RandomisedBenchmarking(object): # pylint: disable=useless-object-inheritan
     def __call__(self, n_gates, n_qubits=1, n_rounds=100):
         
         results = [0, 0]
-        recovered_result = np.zeros(2**n_qubits)
-        recovered_result[0] = 1
+        initial_state = np.zeros(2**n_qubits)
+        initial_state[0] = 1
 
         for _ in range(n_rounds):
 
             random_circuit = QuantumCircuit()
-            random_elements = np.random.choice(
+            # Draw *n_gates* integers from a uniform distribution over the gate indices of the
+            # gateset
+            random_gate_indices = np.random.choice(
                 [i for i in range(len(self.gate_set))], size=n_gates, replace=True
             )
-            random_gates = [self.gate_set[i] for i in random_elements]
+            # Now extract the gates using the random indices
+            random_gates = [self.gate_set[i] for i in random_gate_indices]
 
             # Why make this a generator in the first place? Circuit elements are defined as
             # lists in the QuantumCircuit class
-            random_circuit.circuit_elements = list(splice(random_gates, [self.noise] * n_gates))
+
+            # Update (7/01)
+            random_circuit.circuit_elements = random_gates
 
             # Undo the previous gate operations
             # Is this faster than actually calculating the recovery gate?
             # Also: implementation unelegant
-            for reverse_gate in random_gates[::-1]:
-                random_circuit + reverse_gate # pylint: disable=pointless-statement
+            #for reverse_gate in random_gates[::-1]:
+            #    random_circuit + reverse_gate # pylint: disable=pointless-statement
 
-            vec = copy.deepcopy(recovered_result)
-            state = QubitRegister(vec)
 
-            random_circuit.run_circuit(state)
-            result = state.measure()
+            # Update (7/01): Explicit calculation of recovery gate
+            full_circuit_operation = np.linalg.multi_dot(
+                [gate.unitary_operator for gate in random_gates]
+            )
+            recovery_gate = QuantumGate(np.linalg.inv(full_circuit_operation))
 
-            if np.all(result == recovered_result):
+            random_circuit.circuit_elements.append(recovery_gate)
+
+            # Assert that the gates multiply up to an identity
+            assert np.allclose(
+                np.linalg.multi_dot(
+                    [op.unitary_operator for op in random_circuit.circuit_elements]
+                    ),
+                np.eye(2)
+            )
+
+            # Assert that all gates are unitary
+            assert all(
+                [
+                    np.allclose(
+                    g.unitary_operator.dot(np.conjugate(g.unitary_operator.T)),
+                    np.eye(2)
+                    ) for g in random_circuit.circuit_elements
+                ]
+            )
+
+            qubit_register = QubitRegister(np.copy(initial_state))
+
+            random_circuit.run_circuit(qubit_register)
+
+            # Assert valid density operator
+            assert np.allclose(qubit_register.state, np.conjugate(qubit_register.state.T))
+            assert np.all(np.round(qubit_register.state, 8) >= 0)
+            assert np.allclose(np.trace(qubit_register.state) == 1)
+
+
+            result = qubit_register.measure()
+
+            if np.all(result == initial_state):
                 results[0] += 1
             else:
                 results[1] += 1
