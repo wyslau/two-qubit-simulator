@@ -45,6 +45,7 @@ class RandomisedBenchmarking(object): # pylint: disable=useless-object-inheritan
             # Now extract the gates using the random indices
             random_gates = [self.gate_set[i] for i in random_gate_indices]
 
+
             # Why make this a generator in the first place? Circuit elements are defined as
             # lists in the QuantumCircuit class
 
@@ -83,7 +84,6 @@ class RandomisedBenchmarking(object): # pylint: disable=useless-object-inheritan
                     ) for g in random_circuit.circuit_elements
                 ]
             )
-
             qubit_register = QubitRegister(np.copy(initial_state))
 
             random_circuit.run_circuit(qubit_register)
@@ -91,7 +91,7 @@ class RandomisedBenchmarking(object): # pylint: disable=useless-object-inheritan
             # Assert valid density operator
             assert np.allclose(qubit_register.state, np.conjugate(qubit_register.state.T))
             assert np.all(np.round(qubit_register.state, 8) >= 0)
-            assert np.allclose(np.trace(qubit_register.state) == 1)
+            assert np.allclose(np.trace(qubit_register.state), 1)
 
 
             result = qubit_register.measure()
@@ -123,7 +123,7 @@ def create_single_qubit_gateset():
     ]
 
     clifford_gateset = [
-        QuantumGate(unitary_operator=p.dot(c)) for p in pauli_basis for c in co_set
+        QuantumGate(unitary_operator=c.dot(p)) for c in co_set for p in pauli_basis
     ]
     return clifford_gateset
 
