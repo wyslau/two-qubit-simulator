@@ -54,6 +54,7 @@ confidence=
 
 disable=
     attribute-defined-outside-init,
+    unnecessary-pass,
     duplicate-code,
     fixme,
     invalid-name,

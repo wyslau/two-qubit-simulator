@@ -1,3 +1,4 @@
-from .qubit_register import QubitRegister
-from .quantum_gates import Hadamard, PhaseGate, CNOT, QuantumGate
-from .circuits import QuantumCircuit
+"""
+Initialise the two_qubit_simulator module.
+Add import statements from auxilirary modules here.
+"""

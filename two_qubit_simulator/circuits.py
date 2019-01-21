@@ -3,19 +3,22 @@ Contains the QuantumCircuit class
 """
 
 class QuantumCircuit(object): # pylint: disable=useless-object-inheritance
+    """ Implements a quantum circuit.
 
+         - - - WRITE DOCUMENTATION HERE - - -
+    """
     def __init__(self):
-        self.circuit_elements = []
+        """ Initialise a QuantumCircuit object """
+        pass
 
     def add_gate(self, gate):
-        self.circuit_elements.append(gate)
-
-    def __add__(self, gate):
-        self.add_gate(gate)
+        """ Add a gate to the circuit """
+        pass
 
     def run_circuit(self, register):
-        for gate in self.circuit_elements:
-            gate(register)
+        """ Run the circuit on a given quantum register """
+        pass
 
     def __call__(self, register):
-        self.run_circuit(register)
+        """ Run the circuit on a given quantum register """
+        pass
