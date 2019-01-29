@@ -52,4 +52,16 @@ This class defines a quantum register consisting of one or two qubits. It should
 
 **Attributes**
 
-- **state**
+- **state** The qubit state, represented in whatever form you choose (e.g. density matrices)
+
+
+## The `QuantumGate` class
+
+This class is an abstract class that defines the structure of a quantum gate. Your task is to derive classes from that which implement a quantum gate in the form of a unitary operator.
+
+**Attributes**
+
+- **unitary_operator** a Numpy array representing the operator
+- **symbol** a string representing the gate (e.g. `'CNOT'` for a CNOT gate)
+
+
