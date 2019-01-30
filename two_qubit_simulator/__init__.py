@@ -1,4 +1,4 @@
 """
 Initialise the two_qubit_simulator module.
-Add import statements from auxilirary modules here.
+Add import statements from auxiliary modules here.
 """
